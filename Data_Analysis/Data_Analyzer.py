@@ -1,4 +1,3 @@
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -65,6 +64,10 @@ class DataAnalyzer:
         plt.suptitle('Histogram of Numerical Columns')
         plt.show()
 
+    def Drop_Company_Name_Column(self):
+        self.data.drop(columns=['Company_Name'], inplace=True)
+        return self.data.head())
+
 # Usage
 analyzer = DataAnalyzer('/mnt/data/Top100.csv')
 analyzer.load_data()
@@ -75,3 +78,5 @@ analyzer.handle_missing_values()
 duplicates = analyzer.check_duplicates()
 analyzer.plot_correlation_matrix()
 analyzer.plot_histograms()
+analyzer.Drop_Company_Name_Column()
+
