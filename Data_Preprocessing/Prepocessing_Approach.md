@@ -15,4 +15,7 @@
 - Encode: Categorical-Numerical Feature Transformation
 
 #### Write your plan here
-
+1. Remove the first row and use the second row as the header.
+2. Remove rows with more than 30% missing values.
+3. Impute missing values using a neural network.
+4. Check data imbalance and use SMOTE+ENN to balance the dataset.
