@@ -1,5 +1,5 @@
-#Data Preprocessing (done by Yu-Wen)
-###General idea for the preprocessing: 
+# Data Preprocessing (done by Yu-Wen)
+### General idea for the preprocessing: 
 1. Load and Clean Data
 2. Impute Missing Values
 3. Check Data Imbalance
@@ -10,12 +10,12 @@
 **Python code are divided into four steps: 00.py, 01.oy, 02.py, 03.py**
 
 
-###Challenge:
+### Challenge:
 The biggest challange is apply neural network in missing value estimation, because tensorflow somehow dose not work on apple sillicon. That's also why the code is divided. Additionally, I am not familiar with how neural network work, so it took me some time to understand the mechanism.
 
-##Workflow
-###00_Preprocessing
-~~~python
+## Workflow
+### 00_Preprocessing
+```python
 #see 00.py
 import pandas as pd
 import numpy as np
@@ -65,14 +65,14 @@ X_scaled_df = pd.DataFrame(X_scaled, columns=numeric_cols)
 X_scaled_df['Top_100'] = y.reset_index(drop=True)
 preprocessed_data = pd.concat([company_info.reset_index(drop=True), X_scaled_df, X_non_numeric.reset_index(drop=True)], axis=1)
 preprocessed_data.to_csv('Top100_preprocessed.csv', index=False)
-~~~
-####Key strategy
+```
+#### Key strategy
 1. Remove rows with more than 30% missing values
 2. Substitute missing values with mean first
 3. Standardize the features 
 
-###01_TensorFlow Imputation
-~~~python
+### 01_TensorFlow Imputation
+```python
 #see 01.py
 import pandas as pd
 import numpy as np
@@ -110,18 +110,18 @@ imputed_data = pd.DataFrame(X_imputed, columns=X_scaled.columns)
 imputed_data['Top_100'] = y
 imputed_data = pd.concat([company_info.reset_index(drop=True), imputed_data], axis=1)
 imputed_data.to_csv('Top100_imputed.csv', index=False)
-~~~
+```
 
 Estimate Missing Values Using a **_Neural Network_**
-#####How we Handling Missing Values from 00.py&01.py:
+##### How we Handling Missing Values from 00.py&01.py:
 1. **SimpleImputer:** Initially, we use the mean strategy to fill in missing values.
 2. **StandardScaler:** The features are scaled to have zero mean and unit variance.
 3. **Neural Network:** A neural network with two hidden layers (64 and 32 neurons) and an output layer with the same number of neurons as the input features is built to learn the pattern of the data and predict missing values.
 4. **Training:** The network is trained using the non-missing data.
 5. **Redicting Missing Values:** The trained model predicts missing values which are then used to fill in the original dataset.
 
-###02_Data Balance: SMOTE+ENN
-~~~python
+### 02_Data Balance: SMOTE+ENN
+```python
 #see 02.py
 import pandas as pd
 from imblearn.combine import SMOTEENN
@@ -159,7 +159,7 @@ company_info_resampled = company_info.sample(n=len(balanced_data), replace=True,
 balanced_data = pd.concat([company_info_resampled, balanced_data], axis=1)
 balanced_data.to_csv('Top100_balanced.csv', index=False)
 
-~~~
+```
 Data imbalance before SMOTEENN:
 
 |Top_100|No.|
@@ -175,8 +175,8 @@ Data balance after SMOTEENN:
 1.0|868|
 0.0|825|
 
-###03_Feature Selection
-~~~python
+### 03_Feature Selection
+```python
 #see 03.py
 import pandas as pd
 import numpy as np
@@ -222,18 +222,14 @@ final_data.to_csv('Top100_final.csv', index=False)
 
 print("Final data saved for modeling.")
 
-~~~
+```
 I used Lasso and Ridge for feature selection. Below are the result from two algorithm respectively: 
 
 * **Lasso selected features:** 
-Index([' Revenue ', 'Income', 'Networth', 'Return_Eq', 'Stock', 'Total_assete',
-       'Reture_A', 'Turnover', 'Liab_ratio', 'EPS'],
-      dtype='object')
+Revenue, Income, Networth, Return_Eq, Stock, Total_assete, Reture_A, Turnover, Liab_ratio, EPS
 * **Ridge selected features:** 
-Index([' Revenue ', 'SV', 'Income', 'Networth', 'Return_Eq', 'Stock',
-       'Total_assete', 'Reture_A', 'Turnover', 'Liab_ratio', 'EPS'],
-      dtype='object')
+Revenue, SV, Income, Networth, Return_Eq, Stock, Total_assete, Reture_A, Turnover, Liab_ratio, EPS
 * **Final selected features:**
 ['Income', 'Liab_ratio', 'Total_assete', 'EPS', 'Networth', 'Return_Eq', ' Revenue ', 'Turnover', 'Stock', 'Reture_A', 'SV']
       
-###Check "Top100_final.csv" for modeling.
+### Check "Top100_final.csv" for modeling.
