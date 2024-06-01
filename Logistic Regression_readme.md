@@ -1,4 +1,5 @@
-﻿![](Aspose.Words.dab750fe-7db1-4c4c-b230-dc45cbbdf9f0.001.jpeg)
+
+![Aspose Words dab750fe-7db1-4c4c-b230-dc45cbbdf9f0 001](https://github.com/Zereo0317/Top_100_Company_ML/assets/170546399/068f4e21-210c-4742-b826-87a79357df2a)
 
 以上圖表展示了多個財務指標的分佈情況。以下是每個直方圖的解釋： 
 
