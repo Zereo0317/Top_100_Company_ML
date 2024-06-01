@@ -28,7 +28,8 @@
 - 左下角  (8) ：：真實標籤為  1 ，：但模型預測為  0（：假反例 ，：False Negative）。 
 - 右下角  (246)：：真實標籤為  1，：且模型也預測為  1（：真正例，：True Positive）。 
 
-![](Aspose.Words.dab750fe-7db1-4c4c-b230-dc45cbbdf9f0.002.png)
+![Aspose Words dab750fe-7db1-4c4c-b230-dc45cbbdf9f0 002](https://github.com/Zereo0317/Top_100_Company_ML/assets/170546399/2c4fa1a4-de4a-4e2d-9631-4d9cd4ae31e7)
+
 
 **ROC**  曲線（**ROC Curve**）** 
 
@@ -39,7 +40,8 @@ ROC：曲線展示了模型在不同閾值下的性能：
 
 橙色曲線表示模型的性能，：越靠近左上角越好。：藍色虛線表示隨機猜測的基準線。： 曲線下的面積（AUC，Area：Under：the：Curve）為：0.99，表示模型性能非常好， 接近完美。 
 
-![](Aspose.Words.dab750fe-7db1-4c4c-b230-dc45cbbdf9f0.003.jpeg)
+![Aspose Words dab750fe-7db1-4c4c-b230-dc45cbbdf9f0 003](https://github.com/Zereo0317/Top_100_Company_ML/assets/170546399/b4d6ec53-6918-4b14-9620-be0e17be7c3a)
+
 
 分類報告（**Classification Report**）** 
 
@@ -62,7 +64,8 @@ ROC：曲線展示了模型在不同閾值下的性能：
 - 混淆矩陣顯示錯誤分類的數量很少。 
 - ROC  曲線下的面積接近  1，表明模型的區分能力非常強。 
 
-  ![](Aspose.Words.dab750fe-7db1-4c4c-b230-dc45cbbdf9f0.004.png)
+![Aspose Words dab750fe-7db1-4c4c-b230-dc45cbbdf9f0 004](https://github.com/Zereo0317/Top_100_Company_ML/assets/170546399/a8be1202-7b57-4aed-9b01-baf538a25218)
+
 
 **ROC**  曲線** 
 
@@ -82,7 +85,8 @@ ROC：曲線展示了模型在不同閾值下的性能：
 1. Reture\_A: 0.58 
 1. SV: 0.60 
 
-![](Aspose.Words.dab750fe-7db1-4c4c-b230-dc45cbbdf9f0.005.jpeg)
+![Aspose Words dab750fe-7db1-4c4c-b230-dc45cbbdf9f0 005](https://github.com/Zereo0317/Top_100_Company_ML/assets/170546399/1282204e-1674-4cc5-b421-12954813fbdc)
+
 
 分類報告** 
 
@@ -143,7 +147,9 @@ Feature  Accuracy  Precision  Recall  F1-Score Income vs Top 100  0.90  0.98  0.
 |SV vs Top 100  0.61 ||0\.59 ||0\.71 ||0\.65 ||||||||
 |||||||||||||||
 |||||||||||||||
-![](Aspose.Words.dab750fe-7db1-4c4c-b230-dc45cbbdf9f0.006.jpeg)
+
+![Aspose Words dab750fe-7db1-4c4c-b230-dc45cbbdf9f0 006](https://github.com/Zereo0317/Top_100_Company_ML/assets/170546399/314cebdc-8d28-4a4c-a1f6-edf9874e77a6)
+
 
 1. Income vs Top 100→解釋: Income  特徵對於區分進入前 100 名的數據點具有很 高的分類能力，表現出高精確率和召回率。 
 1. Liab\_ratio vs Top 100→解釋: Liab\_ratio  特徵對於區分進入前 100 名的數據點 表現一般，具有中等的精確率和召回率。 
