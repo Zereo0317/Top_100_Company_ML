@@ -35,7 +35,7 @@ predictions = logreg.predict(my_data_x_scaled)
 
 
 # 計算需要改變的特徵值
-def calculate_feature_changes(data_x, coefficients, intercept, scaler, max_change=10, max_return_change=5):
+def calculate_feature_changes(data_x, coefficients, intercept, scaler, max_change=5, max_return_change=4):
     data_x_scaled = scaler.transform(data_x)
     decision_values = np.dot(data_x_scaled, coefficients) + intercept
     
@@ -45,9 +45,9 @@ def calculate_feature_changes(data_x, coefficients, intercept, scaler, max_chang
             continue  # 如果達標，不需要調整
         for j in range(len(data_x.columns)):
             required_change = (0 - decision_values[i]) / np.abs(coefficients[j])
-            if j in ['Retur_A', 'Return_Eq']:
+            if j in ['Reture_A', 'Return_Eq']:
                 if np.abs(required_change) > max_return_change:
-                    # 最多只能跟限制的一樣多
+                    # 不能超過限制
                     changes[i][j] = np.sign(coefficients[j]) * max_return_change * scaler.scale_[j]
                 else:
                     changes[i][j] = required_change * np.sign(coefficients[j]) * scaler.scale_[j]
@@ -59,7 +59,7 @@ def calculate_feature_changes(data_x, coefficients, intercept, scaler, max_chang
     
     changes_scaled = changes / scaler.scale_
     
-    return changes_scaled*0.3
+    return changes_scaled
 
 # 計算改變特徵值以達到 Top 100 = 1
 changes_needed = calculate_feature_changes(my_data_x, coefficients, intercept, scaler)
@@ -95,13 +95,13 @@ for feature in my_data_x.columns:
     plt.bar(feature, changes_df[feature].mean(), label=feature)
 
 # 繪製最大調整量的水平線
-plt.axhline(y=5, color='red', linestyle='--', label='最大可接受調整量')
+plt.axhline(y=5, color='red', linestyle='--', label='最大調整量')
 plt.axhline(y=-5, color='red', linestyle='--')
 
 # 添加標籤和標題
 plt.xlabel('特徵')
 plt.ylabel('變化量')
-plt.title('特徵調整')
+plt.title('特徵變化')
 
 # 添加圖例
 plt.legend()

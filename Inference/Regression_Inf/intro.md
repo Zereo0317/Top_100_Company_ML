@@ -1,8 +1,11 @@
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
+# 利用回歸模型判斷如何調整
 
+
+## 簡介
+訓練回歸模型，並對資料預測後，計算決策平面來尋找參數調整的方向。
+
+## 讀入資料並訓練模型
+```python
 # 讀取訓練資料
 train_data = pd.read_csv("dataset/Top100_final.csv", encoding='utf-8')
 
@@ -17,23 +20,21 @@ X_train_scaled = scaler.fit_transform(X_train)
 # 訓練模型
 logreg = LogisticRegression(max_iter=10000)
 logreg.fit(X_train_scaled, y_train)
-
+```
+## 
+-
+```python
 # 獲取決策邊界的係數和截距
 coefficients = logreg.coef_[0]
 intercept = logreg.intercept_[0]
+```
 
-
-my_data = pd.read_csv("dataset/test_cody.csv")
-my_data_x = my_data.iloc[:, 2:12]
- 
-# 對測試資料進行與訓練資料相同的標準化處理
-my_data_x_scaled = scaler.transform(my_data_x)
-
-# 使用訓練好的模型進行預測
-predictions = logreg.predict(my_data_x_scaled)
-
-
-
+## 計算調整特徵
+計算點和決策平面的距離來確定需要調整的特徵值。當決策值為負數時，表示模型認為他不是Top100的機率很高，所以要將他往正數修。
+這不是一個很好的方法，
+- 其中decision_values[i]就是該特徵值對應決策平面特徵值的差距
+- 可自行設定特徵的變動限制，舉例希望Reture_A(其實應該式Return_A，資料誤植)和Return_Eq (ROA和ROE)的變動不要超過5，其他的不要超過4
+```python
 # 計算需要改變的特徵值
 def calculate_feature_changes(data_x, coefficients, intercept, scaler, max_change=10, max_return_change=5):
     data_x_scaled = scaler.transform(data_x)
@@ -59,56 +60,10 @@ def calculate_feature_changes(data_x, coefficients, intercept, scaler, max_chang
     
     changes_scaled = changes / scaler.scale_
     
-    return changes_scaled*0.3
+    return changes_scaled*0.3 # 縮放一點 不然數字太誇張
+```
 
-# 計算改變特徵值以達到 Top 100 = 1
-changes_needed = calculate_feature_changes(my_data_x, coefficients, intercept, scaler)
-changes_df = pd.DataFrame(changes_needed, columns=my_data_x.columns)
-changes_df["Top_100"] = predictions
+## 結果
+### Notice : 由於訓練模型是尺用那坨訓練資料的StandardScaler標準化過的模型,所以輸入需為被同一個"標準化器"的資料,同樣地,轉換回去也要用相同的"標準化器"Inverse Transform
+![](adjust.png "特徵調整")
 
-# 打印結果
-print("各特徵應改變的量:")
-print(changes_df)
-
-
-# 將調整後的特徵應用到測試資料集中
-adjusted_data_x = my_data_x.copy()
-adjusted_data_x += changes_df
-
-
-
-# 使用訓練好的模型進行預測
-predictions_after_adjustment = logreg.predict(adjusted_data_x)
-
-# 打印預測結果
-print("調整後的預測結果:")
-print(predictions_after_adjustment)
-
-
-import matplotlib.pyplot as plt
-
-# 設置圖形大小
-plt.figure(figsize=(10, 6))
-
-# 繪製每個特徵的變化量
-for feature in my_data_x.columns:
-    plt.bar(feature, changes_df[feature].mean(), label=feature)
-
-# 繪製最大調整量的水平線
-plt.axhline(y=5, color='red', linestyle='--', label='最大可接受調整量')
-plt.axhline(y=-5, color='red', linestyle='--')
-
-# 添加標籤和標題
-plt.xlabel('特徵')
-plt.ylabel('變化量')
-plt.title('特徵調整')
-
-# 添加圖例
-plt.legend()
-
-# 旋轉特徵標籤
-plt.xticks(rotation=45)
-
-# 顯示圖形
-plt.tight_layout()
-plt.show()
